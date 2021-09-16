@@ -1,4 +1,5 @@
 import refs from './refs'
+
 const { loadMoreBtn, list, form } = refs
 
 // пагинация - отрисовка какого то ко-ва изоб-й
