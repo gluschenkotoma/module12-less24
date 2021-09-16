@@ -22,6 +22,9 @@ let page = 1
 //ввести в инпут значение и получить ответ на запрос
 form.addEventListener('submit', e => {
   e.preventDefault()
+  console.log(e.target.elements.input) //ссылка на инпут
+  console.log(e.target.elements.value) //значение инпута
+  query = e.target.elements.value
   let params = `?query=${query}&per_page=5&page=${page}` //квери параметрыю (меняющиеся),пары с documentation, через &
   let url = BASE_URL + endpoints + params
 
@@ -31,11 +34,11 @@ form.addEventListener('submit', e => {
       return response.json()
     })
     .then(data => {
-      console.log(data.page)
+      console.log(data.page, data.photos)
       return data.photos
     })
     .then(array => {
-      console.log(array)
+      //   console.log(array)
       let result = array
         .map(elem => {
           console.log(elem)
@@ -48,9 +51,15 @@ form.addEventListener('submit', e => {
   </li>`
         })
         .join('')
-      console.log(result)
+      //   console.log(result)//отрисовка массива
       list.insertAdjacentHTML('beforeend', result)
-    }) //отрисовка массива
+    })
+    .catch(error => {
+      console.log(error)
+    })
+    .finally(() => {
+      form.reset //очистка формы
+    })
 })
 // =============================================================================
 //изменить значение page при нажатии клика,после изменения page
@@ -74,6 +83,23 @@ loadMoreBtn.addEventListener('click', () => {
       return response.json()
     })
     .then(data => {
-      console.log(data.page)
+      console.log(data.page, data.photos)
+      return data.photos
+    })
+    .then(array => {
+      let result = array
+        .map(elem => {
+          console.log(elem)
+          const {
+            photographer,
+            src: { original, tiny },
+          } = elem
+          return `<li>
+    <img src="${tiny}" data-src="${original}" alt="${photographer}" />
+  </li>`
+        })
+        .join('')
+      //   console.log(result)
+      list.insertAdjacentHTML('beforeend', result)
     })
 })
