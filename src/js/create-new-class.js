@@ -1,5 +1,6 @@
 import refs from './refs'
-import FetchObject from './train-class'
+// import FetchObject from './train-class'
+import FetchObject from './optimization-class'
 const { loadMoreBtn, list, form } = refs
 
 const BASE_URL = `https://api.pexels.com/v1/` //базовый URL
@@ -15,4 +16,4 @@ const options = {
 const myFetch = new FetchObject(BASE_URL, endPoints, options)
 console.log(myFetch)
 myFetch.getFetchBySubmit(form, list) //сылка на форму исписок, в классе это параметры formRef, listRef
-myFetch.getFetchByClick(loadMoreBtn, list) //в классе btnRef/ listRef
+myFetch.getFetchByClick(loadMoreBtn, list) //в классе btnRef
