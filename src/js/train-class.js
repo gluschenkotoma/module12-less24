@@ -19,7 +19,7 @@ export default class FetchObject {
     return this._page //возвращает текущее значение
   }
   set page(value) {
-    return (this._page = value) //возвращает перезаписаное значение
+    return (this._page += value) //возвращает перезаписаное значение
   }
   // методы класса
   // formRef, listRef параметры, что бы видно было что мы ждем ссылку на форму и на лист при вызове в экземпляре класса
@@ -27,11 +27,11 @@ export default class FetchObject {
     //параметр form - ссылка на форму которую дадут при вызове
     formRef.addEventListener('submit', e => {
       e.preventDefault()
-      console.log(e.target.elements.value) //значение инпута
-      this._query = e.target.elements.input.value // сеттер,устанавливает новое значение, который запишется в свойство класа
+      console.log(e.target.elements.value) //значение инпута, целевого єлемента
+      this.query = e.target.elements.input.value // сеттер,устанавливает новое значение, который запишется в свойство класа
       let params = `?query=${this._query}&per_page=${this.perPage}&page=${this._page}` //квери параметрыю (меняющиеся),пары с documentation, через &
       let url = this.BASE_URL + this.endPoints + params
-
+      listRef.innerHTML = '' //почистить список перед самим запросом
       fetch(url, this.options) //this.options - передается при вызове через параметр
         .then(response => {
           console.log('Ответ', response)
@@ -66,20 +66,20 @@ export default class FetchObject {
         })
     })
   }
-  getFetchByClick() {
-    loadMoreBtn.addEventListener('click', () => {
-      page += 1
+  getFetchByClick(btnRef, listRef) {
+    btnRef.addEventListener('click', () => {
+      this.page = 1 //идет в сеттер
 
       // page - пакет с количества ответов, сколько пакетов нужно вернуть
       // per_page - записывается в params, ко-во ответов(фото), max:80;
       let params = `?query=${this._query}&per_page=${this.perPage}&page=${this._page}` //квери параметрыю (меняющиеся),пары с documentation, через &
-      let url = BASE_URL + endpoints + params
+      let url = this.BASE_URL + this.endPoints + params
 
       //fetch запрос возвращает промис, и что бы его получить, доб-м метод then,
       // в then - колбек с параметром response c возвратом обьекта в чит.виде response.json(),
       // то что возвращает первый then, получает, принимает через параметр колбека 2й then
 
-      fetch(url, options)
+      fetch(url, this.options)
         .then(response => {
           console.log('Ответ', response)
           return response.json()
@@ -102,7 +102,7 @@ export default class FetchObject {
             })
             .join('')
           //   console.log(result)
-          list.insertAdjacentHTML('beforeend', result)
+          listRef.insertAdjacentHTML('beforeend', result)
         })
     })
   }

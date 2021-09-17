@@ -15,3 +15,4 @@ const options = {
 const myFetch = new FetchObject(BASE_URL, endPoints, options)
 console.log(myFetch)
 myFetch.getFetchBySubmit(form, list) //сылка на форму исписок, в классе это параметры formRef, listRef
+myFetch.getFetchByClick(loadMoreBtn, list) //в классе btnRef/ listRef
