@@ -84,4 +84,4 @@ export default class FetchObject {
 
 // git add .
 // git commit -m "name of commit"
-//git push
+// git push
